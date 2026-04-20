@@ -1,7 +1,6 @@
 "use client";
 
 import clsx from "clsx";
-import { useEffect, useRef } from "react";
 import {
 	EditableText,
 	EditableTextarea,
@@ -51,10 +50,8 @@ export const AuthAccountShell = ({
 	block,
 }: WebsiteBuilderBlockComponentProps<AuthAccountShellProps>) => {
 	const accountTabs = useWebsiteBuilderStore((state) => state.accountTabs);
-	const mode = useWebsiteBuilderStore((state) => state.mode);
 	const requestAuth = useWebsiteBuilderStore((state) => state.requestAuth);
 	const authResource = useWebsiteBuilderStore((state) => state.resources.auth);
-	const requestedAuthRef = useRef(false);
 	const user =
 		typeof authResource === "object" && authResource !== null
 			? (authResource as { user?: { email?: string; name?: string } | null }).user
@@ -63,15 +60,6 @@ export const AuthAccountShell = ({
 		accountTabs,
 		normalizeStringItems(block.props.disabledTabIds),
 	);
-
-	useEffect(() => {
-		if (mode !== "preview" || user || requestedAuthRef.current) {
-			return;
-		}
-
-		requestedAuthRef.current = true;
-		requestAuth?.();
-	}, [mode, requestAuth, user]);
 
 	return (
 		<section className="mx-auto grid w-full max-w-[var(--wb-site-max-width,1280px)] gap-8 px-[var(--wb-site-gutter,24px)] py-12 text-[var(--wb-site-text)]">

@@ -1,0 +1,7 @@
+{
+  "project_slug": "auth-website-builder",
+  "name": "@init-modules/auth-website-builder",
+  "entry_type": "package",
+  "scope": "package:@init-modules/auth-website-builder",
+  "package_name": "@init-modules/auth-website-builder"
+}
