@@ -32,7 +32,11 @@ export const authWebsiteBuilderSiteFrameExtension: WebsiteBuilderSiteFrameExtens
 					order: 100,
 					links: [
 						{ id: "auth:footer-login", label: "Sign in", href: "/login" },
-						{ id: "auth:footer-account-link", label: "My account", href: "/account" },
+						{
+							id: "auth:footer-account-link",
+							label: "My account",
+							href: "/account",
+						},
 					],
 				},
 			],

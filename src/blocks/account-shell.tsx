@@ -1,18 +1,18 @@
 "use client";
 
-import clsx from "clsx";
 import {
-	EditableText,
-	EditableTextarea,
-	type WebsiteBuilderAccountTabExtension,
-	type WebsiteBuilderBlockComponentProps,
-	WebsiteBuilderLink,
 	createWebsiteBuilderLocalizedDefault,
 	defineWebsiteBuilderBlockDefinition,
+	EditableText,
+	EditableTextarea,
 	resolveWebsiteBuilderAccountTabs,
 	useWebsiteBuilderStore,
+	type WebsiteBuilderAccountTabExtension,
+	type WebsiteBuilderBlockComponentProps,
 	type WebsiteBuilderField,
+	WebsiteBuilderLink,
 } from "@init-modules/website-builder/public";
+import clsx from "clsx";
 
 type AuthAccountShellProps = {
 	eyebrow: string;
@@ -31,12 +31,48 @@ type AuthAccountOverviewProps = {
 const ACCOUNT_CONTENT_AREA_ID = "content";
 
 const fields: WebsiteBuilderField[] = [
-	{ path: "eyebrow", label: "Eyebrow", kind: "text", group: "content", localization: "localized" },
-	{ path: "title", label: "Title", kind: "text", group: "content", localization: "localized" },
-	{ path: "body", label: "Body", kind: "textarea", group: "content", localization: "localized" },
-	{ path: "signedOutTitle", label: "Signed out title", kind: "text", group: "content", localization: "localized" },
-	{ path: "signedOutBody", label: "Signed out body", kind: "textarea", group: "content", localization: "localized" },
-	{ path: "signInLabel", label: "Sign-in label", kind: "text", group: "content", localization: "localized" },
+	{
+		path: "eyebrow",
+		label: "Eyebrow",
+		kind: "text",
+		group: "content",
+		localization: "localized",
+	},
+	{
+		path: "title",
+		label: "Title",
+		kind: "text",
+		group: "content",
+		localization: "localized",
+	},
+	{
+		path: "body",
+		label: "Body",
+		kind: "textarea",
+		group: "content",
+		localization: "localized",
+	},
+	{
+		path: "signedOutTitle",
+		label: "Signed out title",
+		kind: "text",
+		group: "content",
+		localization: "localized",
+	},
+	{
+		path: "signedOutBody",
+		label: "Signed out body",
+		kind: "textarea",
+		group: "content",
+		localization: "localized",
+	},
+	{
+		path: "signInLabel",
+		label: "Sign-in label",
+		kind: "text",
+		group: "content",
+		localization: "localized",
+	},
 	{
 		path: "disabledTabIds",
 		label: "Disabled account tab ids",
@@ -79,7 +115,9 @@ const isAccountTabActive = (
 		return normalizedRoute === matchHref;
 	}
 
-	return normalizedRoute === matchHref || normalizedRoute.startsWith(`${matchHref}/`);
+	return (
+		normalizedRoute === matchHref || normalizedRoute.startsWith(`${matchHref}/`)
+	);
 };
 
 const AccountTabIcon = ({ icon }: { icon?: string }) => {
@@ -132,7 +170,8 @@ export const AuthAccountShell = ({
 	const currentRoute = useWebsiteBuilderStore((state) => state.document.route);
 	const user =
 		typeof authResource === "object" && authResource !== null
-			? (authResource as { user?: { email?: string; name?: string } | null }).user
+			? (authResource as { user?: { email?: string; name?: string } | null })
+					.user
 			: null;
 	const tabs = resolveWebsiteBuilderAccountTabs(
 		accountTabs,
@@ -204,7 +243,9 @@ export const AuthAccountShell = ({
 							<div className="mt-3 text-2xl font-semibold">
 								{user.name ?? user.email}
 							</div>
-							<div className="mt-2 text-[var(--wb-site-muted)]">{user.email}</div>
+							<div className="mt-2 text-[var(--wb-site-muted)]">
+								{user.email}
+							</div>
 						</div>
 					) : (
 						<div className="rounded-[calc(var(--wb-site-radius,24px)-4px)] border border-[var(--wb-site-border)] bg-[var(--wb-site-surface)] p-6">
@@ -287,7 +328,8 @@ export const AuthAccountOverview = ({
 	const authResource = useWebsiteBuilderStore((state) => state.resources.auth);
 	const user =
 		typeof authResource === "object" && authResource !== null
-			? (authResource as { user?: { email?: string; name?: string } | null }).user
+			? (authResource as { user?: { email?: string; name?: string } | null })
+					.user
 			: null;
 
 	return (
@@ -307,26 +349,27 @@ export const AuthAccountOverview = ({
 	);
 };
 
-export const authAccountOverviewDefinition = defineWebsiteBuilderBlockDefinition({
-	type: "auth-account-overview",
-	label: "Auth Account Overview",
-	description: "Signed-in account overview card for the account shell.",
-	category: "Auth",
-	icon: "user-round",
-	defaults: {
-		statusLabel: createWebsiteBuilderLocalizedDefault({
-			en: "Signed in",
-			ru: "Вы вошли",
-		}),
-	},
-	fields: [
-		{
-			path: "statusLabel",
-			label: "Status label",
-			kind: "text",
-			group: "content",
-			localization: "localized",
+export const authAccountOverviewDefinition =
+	defineWebsiteBuilderBlockDefinition({
+		type: "auth-account-overview",
+		label: "Auth Account Overview",
+		description: "Signed-in account overview card for the account shell.",
+		category: "Auth",
+		icon: "user-round",
+		defaults: {
+			statusLabel: createWebsiteBuilderLocalizedDefault({
+				en: "Signed in",
+				ru: "Вы вошли",
+			}),
 		},
-	],
-	component: AuthAccountOverview,
-});
+		fields: [
+			{
+				path: "statusLabel",
+				label: "Status label",
+				kind: "text",
+				group: "content",
+				localization: "localized",
+			},
+		],
+		component: AuthAccountOverview,
+	});
