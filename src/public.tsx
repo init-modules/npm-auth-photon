@@ -9,25 +9,23 @@ import {
 	authAccountOverviewDefinition,
 	authAccountShellDefinition,
 } from "./blocks/account-shell";
-import { authWebsiteBuilderDocuments } from "./documents";
 import {
 	authAccountOverviewTab,
 	authWebsiteBuilderSiteFrameExtension,
 } from "./sdk";
 
-export const authWebsiteBuilderModule: WebsiteBuilderModule = {
+export const authPublicWebsiteBuilderModule: WebsiteBuilderModule = {
 	module: "auth-website-builder",
 	label: "Auth Website Builder",
 	version: "0.1.0",
 	blocks: [authAccountShellDefinition, authAccountOverviewDefinition],
 };
 
-export const authWebsiteBuilderKit: WebsiteBuilderInstallableKit =
+export const authPublicWebsiteBuilderKit: WebsiteBuilderInstallableKit =
 	createWebsiteBuilderKit({
 		key: "auth-website-builder",
 		label: "Auth Website Builder",
-		modules: [authWebsiteBuilderModule],
-		documents: authWebsiteBuilderDocuments,
+		modules: [authPublicWebsiteBuilderModule],
 		siteFrameExtensions: [authWebsiteBuilderSiteFrameExtension],
 		accountTabs: [authAccountOverviewTab],
 	});

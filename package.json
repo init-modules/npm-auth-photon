@@ -8,6 +8,7 @@
 	"types": "./src/index.ts",
 	"exports": {
 		".": "./src/index.ts",
+		"./public": "./src/public.tsx",
 		"./ui": "./src/ui.ts",
 		"./documents": "./src/documents.ts"
 	},
@@ -29,6 +30,8 @@
 		"typescript": "^5.9.3"
 	},
 	"websiteBuilder": {
-		"installableKitExport": "authWebsiteBuilderKit"
+		"installableKitExport": "authWebsiteBuilderKit",
+		"publicInstallableKitExport": "authPublicWebsiteBuilderKit",
+		"publicInstallableKitImportPath": "@init-modules/auth-website-builder/public"
 	}
 }

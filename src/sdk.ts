@@ -3,7 +3,7 @@ import {
 	createWebsiteBuilderSiteFrameExtension,
 	type WebsiteBuilderAccountTabExtension,
 	type WebsiteBuilderSiteFrameExtension,
-} from "@init-modules/website-builder";
+} from "@init-modules/website-builder/public";
 
 export const authWebsiteBuilderSiteFrameExtension: WebsiteBuilderSiteFrameExtension =
 	createWebsiteBuilderSiteFrameExtension({
@@ -44,6 +44,11 @@ export const authAccountOverviewTab: WebsiteBuilderAccountTabExtension =
 		id: "auth:overview",
 		label: "Overview",
 		href: "/account",
+		icon: "user-round",
+		match: {
+			type: "exact",
+			href: "/account",
+		},
 		order: 0,
 	});
 
