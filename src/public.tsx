@@ -1,31 +1,31 @@
 "use client";
 
 import {
-	createWebsiteBuilderKit,
-	type WebsiteBuilderInstallableKit,
-	type WebsiteBuilderModule,
-} from "@init-modules/website-builder/public";
+	createPhotonKit,
+	type PhotonInstallableKit,
+	type PhotonModule,
+} from "@init/photon/public";
 import {
 	authAccountOverviewDefinition,
 	authAccountShellDefinition,
 } from "./blocks/account-shell";
 import {
 	authAccountOverviewTab,
-	authWebsiteBuilderSiteFrameExtension,
+	authPhotonSiteFrameExtension,
 } from "./sdk";
 
-export const authPublicWebsiteBuilderModule: WebsiteBuilderModule = {
-	module: "auth-website-builder",
-	label: "Auth Website Builder",
+export const authPublicPhotonModule: PhotonModule = {
+	module: "auth-photon",
+	label: "Auth Photon",
 	version: "0.1.0",
 	blocks: [authAccountShellDefinition, authAccountOverviewDefinition],
 };
 
-export const authPublicWebsiteBuilderKit: WebsiteBuilderInstallableKit =
-	createWebsiteBuilderKit({
-		key: "auth-website-builder",
-		label: "Auth Website Builder",
-		modules: [authPublicWebsiteBuilderModule],
-		siteFrameExtensions: [authWebsiteBuilderSiteFrameExtension],
+export const authPublicPhotonKit: PhotonInstallableKit =
+	createPhotonKit({
+		key: "auth-photon",
+		label: "Auth Photon",
+		modules: [authPublicPhotonModule],
+		siteFrameExtensions: [authPhotonSiteFrameExtension],
 		accountTabs: [authAccountOverviewTab],
 	});

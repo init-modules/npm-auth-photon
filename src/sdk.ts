@@ -1,12 +1,12 @@
 import {
-	createWebsiteBuilderAccountTabExtension,
-	createWebsiteBuilderSiteFrameExtension,
-	type WebsiteBuilderAccountTabExtension,
-	type WebsiteBuilderSiteFrameExtension,
-} from "@init-modules/website-builder/public";
+	createPhotonAccountTabExtension,
+	createPhotonSiteFrameExtension,
+	type PhotonAccountTabExtension,
+	type PhotonSiteFrameExtension,
+} from "@init/photon/public";
 
-export const authWebsiteBuilderSiteFrameExtension: WebsiteBuilderSiteFrameExtension =
-	createWebsiteBuilderSiteFrameExtension({
+export const authPhotonSiteFrameExtension: PhotonSiteFrameExtension =
+	createPhotonSiteFrameExtension({
 		id: "auth",
 		label: "Auth",
 		order: 100,
@@ -43,8 +43,8 @@ export const authWebsiteBuilderSiteFrameExtension: WebsiteBuilderSiteFrameExtens
 		},
 	});
 
-export const authAccountOverviewTab: WebsiteBuilderAccountTabExtension =
-	createWebsiteBuilderAccountTabExtension({
+export const authAccountOverviewTab: PhotonAccountTabExtension =
+	createPhotonAccountTabExtension({
 		id: "auth:overview",
 		label: "Overview",
 		href: "/account",
@@ -57,4 +57,4 @@ export const authAccountOverviewTab: WebsiteBuilderAccountTabExtension =
 	});
 
 export const createAuthAccountTabExtension =
-	createWebsiteBuilderAccountTabExtension;
+	createPhotonAccountTabExtension;

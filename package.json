@@ -1,7 +1,7 @@
 {
-	"name": "@init-modules/auth-website-builder",
+	"name": "@init/auth-photon",
 	"version": "0.1.0",
-	"description": "Website Builder integration kit for init auth.",
+	"description": "Photon integration kit for init auth.",
 	"type": "module",
 	"main": "./src/index.ts",
 	"module": "./src/index.ts",
@@ -13,25 +13,27 @@
 		"./documents": "./src/documents.ts"
 	},
 	"dependencies": {
-		"@init-modules/auth-ui": "file:../auth-ui",
+		"@init/auth-ui": "file:../auth-ui",
 		"clsx": "^2.1.1"
 	},
 	"peerDependencies": {
-		"@init-modules/auth": "^0.1.0",
-		"@init-modules/website-builder": "^0.1.0",
+		"@init/auth": "^0.1.0",
+		"@init/photon": "^0.1.0",
+		"@init/ui": "^0.1.0",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0"
 	},
 	"devDependencies": {
-		"@init-modules/auth": "file:../auth",
-		"@init-modules/website-builder": "file:../../website-builder-foundation/website-builder",
+		"@init/auth": "file:../auth",
+		"@init/photon": "file:../../photon-foundation/photon",
+		"@init/ui": "file:../../ui-foundation/ui",
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
 		"typescript": "^5.9.3"
 	},
-	"websiteBuilder": {
-		"installableKitExport": "authWebsiteBuilderKit",
-		"publicInstallableKitExport": "authPublicWebsiteBuilderKit",
-		"publicInstallableKitImportPath": "@init-modules/auth-website-builder/public"
+	"photon": {
+		"installableKitExport": "authPhotonKit",
+		"publicInstallableKitExport": "authPublicPhotonKit",
+		"publicInstallableKitImportPath": "@init/auth-photon/public"
 	}
 }

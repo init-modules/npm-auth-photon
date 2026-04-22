@@ -1,17 +1,17 @@
 "use client";
 
 import {
-	createWebsiteBuilderLocalizedDefault,
-	defineWebsiteBuilderBlockDefinition,
+	createPhotonLocalizedDefault,
+	definePhotonBlockDefinition,
 	EditableText,
 	EditableTextarea,
-	resolveWebsiteBuilderAccountTabs,
-	useWebsiteBuilderStore,
-	type WebsiteBuilderAccountTabExtension,
-	type WebsiteBuilderBlockComponentProps,
-	type WebsiteBuilderField,
-	WebsiteBuilderLink,
-} from "@init-modules/website-builder/public";
+	resolvePhotonAccountTabs,
+	usePhotonStore,
+	type PhotonAccountTabExtension,
+	type PhotonBlockComponentProps,
+	type PhotonField,
+	PhotonLink,
+} from "@init/photon/public";
 import clsx from "clsx";
 
 type AuthAccountShellProps = {
@@ -30,7 +30,7 @@ type AuthAccountOverviewProps = {
 
 const ACCOUNT_CONTENT_AREA_ID = "content";
 
-const fields: WebsiteBuilderField[] = [
+const fields: PhotonField[] = [
 	{
 		path: "eyebrow",
 		label: "Eyebrow",
@@ -100,7 +100,7 @@ const normalizeHref = (href: string | undefined) => {
 };
 
 const isAccountTabActive = (
-	tab: WebsiteBuilderAccountTabExtension,
+	tab: PhotonAccountTabExtension,
 	currentRoute: string,
 ) => {
 	const normalizedRoute = normalizeHref(currentRoute);
@@ -163,17 +163,17 @@ const AccountTabIcon = ({ icon }: { icon?: string }) => {
 export const AuthAccountShell = ({
 	block,
 	renderArea,
-}: WebsiteBuilderBlockComponentProps<AuthAccountShellProps>) => {
-	const accountTabs = useWebsiteBuilderStore((state) => state.accountTabs);
-	const requestAuth = useWebsiteBuilderStore((state) => state.requestAuth);
-	const authResource = useWebsiteBuilderStore((state) => state.resources.auth);
-	const currentRoute = useWebsiteBuilderStore((state) => state.document.route);
+}: PhotonBlockComponentProps<AuthAccountShellProps>) => {
+	const accountTabs = usePhotonStore((state) => state.accountTabs);
+	const requestAuth = usePhotonStore((state) => state.requestAuth);
+	const authResource = usePhotonStore((state) => state.resources.auth);
+	const currentRoute = usePhotonStore((state) => state.document.route);
 	const user =
 		typeof authResource === "object" && authResource !== null
 			? (authResource as { user?: { email?: string; name?: string } | null })
 					.user
 			: null;
-	const tabs = resolveWebsiteBuilderAccountTabs(
+	const tabs = resolvePhotonAccountTabs(
 		accountTabs,
 		normalizeStringItems(block.props.disabledTabIds),
 	);
@@ -185,49 +185,49 @@ export const AuthAccountShell = ({
 	const resolvedContentAreaIndex = contentAreaIndex >= 0 ? contentAreaIndex : 0;
 
 	return (
-		<section className="mx-auto grid w-full max-w-[var(--wb-site-max-width,1280px)] gap-8 px-[var(--wb-site-gutter,24px)] py-12 text-[var(--wb-site-text)]">
+		<section className="mx-auto grid w-full max-w-[var(--photon-site-max-width,1280px)] gap-8 px-[var(--photon-site-gutter,24px)] py-12 text-[var(--photon-site-text)]">
 			<div className="max-w-3xl">
 				<EditableText
 					blockId={block.id}
 					path="eyebrow"
-					className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--wb-site-accent)]"
+					className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--photon-site-accent)]"
 				/>
 				<EditableText
 					blockId={block.id}
 					path={user ? "title" : "signedOutTitle"}
 					as="h1"
-					className="mt-4 [font-family:var(--wb-site-heading-font)] text-5xl font-semibold tracking-[-0.05em]"
+					className="mt-4 [font-family:var(--photon-site-heading-font)] text-5xl font-semibold tracking-[-0.05em]"
 				/>
 				<EditableTextarea
 					blockId={block.id}
 					path={user ? "body" : "signedOutBody"}
-					className="mt-4 max-w-2xl text-lg leading-8 text-[var(--wb-site-muted)]"
+					className="mt-4 max-w-2xl text-lg leading-8 text-[var(--photon-site-muted)]"
 				/>
 			</div>
 
 			<div className="grid gap-5 lg:grid-cols-[260px_minmax(0,1fr)]">
 				<nav
 					aria-label="Account"
-					className="sticky top-6 flex h-fit flex-col gap-1 rounded-[calc(var(--wb-site-radius,24px)-4px)] border border-[var(--wb-site-border)] bg-[var(--wb-site-surface)] p-2"
+					className="sticky top-6 flex h-fit flex-col gap-1 rounded-[calc(var(--photon-site-radius,24px)-4px)] border border-[var(--photon-site-border)] bg-[var(--photon-site-surface)] p-2"
 				>
 					{tabs.map((tab) => {
 						const isActive = isAccountTabActive(tab, currentRoute);
 
 						return (
-							<WebsiteBuilderLink
+							<PhotonLink
 								key={tab.id}
 								href={tab.href ?? "/account"}
 								aria-current={isActive ? "page" : undefined}
 								className={clsx(
-									"inline-flex min-h-11 items-center gap-3 rounded-[calc(var(--wb-site-radius,24px)-10px)] border px-3 py-2 text-sm font-semibold transition",
+									"inline-flex min-h-11 items-center gap-3 rounded-[calc(var(--photon-site-radius,24px)-10px)] border px-3 py-2 text-sm font-semibold transition",
 									isActive
-										? "border-[color-mix(in_srgb,var(--wb-site-accent)_36%,var(--wb-site-border))] bg-[color-mix(in_srgb,var(--wb-site-accent)_12%,transparent)] text-[var(--wb-site-text)]"
-										: "border-transparent text-[var(--wb-site-muted)] hover:bg-[color-mix(in_srgb,var(--wb-site-accent)_8%,transparent)] hover:text-[var(--wb-site-text)]",
+										? "border-[color-mix(in_srgb,var(--photon-site-accent)_36%,var(--photon-site-border))] bg-[color-mix(in_srgb,var(--photon-site-accent)_12%,transparent)] text-[var(--photon-site-text)]"
+										: "border-transparent text-[var(--photon-site-muted)] hover:bg-[color-mix(in_srgb,var(--photon-site-accent)_8%,transparent)] hover:text-[var(--photon-site-text)]",
 								)}
 							>
 								<AccountTabIcon icon={tab.icon} />
 								<span>{tab.label}</span>
-							</WebsiteBuilderLink>
+							</PhotonLink>
 						);
 					})}
 				</nav>
@@ -236,20 +236,20 @@ export const AuthAccountShell = ({
 					{user && contentArea && renderArea ? (
 						renderArea(contentArea, resolvedContentAreaIndex)
 					) : user ? (
-						<div className="rounded-[calc(var(--wb-site-radius,24px)-4px)] border border-[var(--wb-site-border)] bg-[var(--wb-site-surface)] p-6">
-							<div className="text-sm uppercase tracking-[0.22em] text-[var(--wb-site-muted)]">
+						<div className="rounded-[calc(var(--photon-site-radius,24px)-4px)] border border-[var(--photon-site-border)] bg-[var(--photon-site-surface)] p-6">
+							<div className="text-sm uppercase tracking-[0.22em] text-[var(--photon-site-muted)]">
 								Signed in
 							</div>
 							<div className="mt-3 text-2xl font-semibold">
 								{user.name ?? user.email}
 							</div>
-							<div className="mt-2 text-[var(--wb-site-muted)]">
+							<div className="mt-2 text-[var(--photon-site-muted)]">
 								{user.email}
 							</div>
 						</div>
 					) : (
-						<div className="rounded-[calc(var(--wb-site-radius,24px)-4px)] border border-[var(--wb-site-border)] bg-[var(--wb-site-surface)] p-6">
-							<div className="mb-5 max-w-xl text-[var(--wb-site-muted)]">
+						<div className="rounded-[calc(var(--photon-site-radius,24px)-4px)] border border-[var(--photon-site-border)] bg-[var(--photon-site-surface)] p-6">
+							<div className="mb-5 max-w-xl text-[var(--photon-site-muted)]">
 								<EditableTextarea
 									blockId={block.id}
 									path="signedOutBody"
@@ -260,7 +260,7 @@ export const AuthAccountShell = ({
 								type="button"
 								onClick={requestAuth}
 								className={clsx(
-									"inline-flex min-h-12 cursor-pointer items-center justify-center rounded-full bg-[var(--wb-site-accent)] px-5 text-sm font-semibold text-white shadow-[0_18px_34px_rgba(15,118,110,0.28)] transition hover:translate-y-[-1px]",
+									"inline-flex min-h-12 cursor-pointer items-center justify-center rounded-full bg-[var(--photon-site-accent)] px-5 text-sm font-semibold text-white shadow-[0_18px_34px_rgba(15,118,110,0.28)] transition hover:translate-y-[-1px]",
 								)}
 							>
 								<EditableText
@@ -277,7 +277,7 @@ export const AuthAccountShell = ({
 	);
 };
 
-export const authAccountShellDefinition = defineWebsiteBuilderBlockDefinition({
+export const authAccountShellDefinition = definePhotonBlockDefinition({
 	type: "auth-account-shell",
 	label: "Auth Account Shell",
 	description:
@@ -285,27 +285,27 @@ export const authAccountShellDefinition = defineWebsiteBuilderBlockDefinition({
 	category: "Auth",
 	icon: "user-round",
 	defaults: {
-		eyebrow: createWebsiteBuilderLocalizedDefault({
+		eyebrow: createPhotonLocalizedDefault({
 			en: "Account",
 			ru: "Личный кабинет",
 		}),
-		title: createWebsiteBuilderLocalizedDefault({
+		title: createPhotonLocalizedDefault({
 			en: "Manage your account",
 			ru: "Управляйте аккаунтом",
 		}),
-		body: createWebsiteBuilderLocalizedDefault({
+		body: createPhotonLocalizedDefault({
 			en: "Review profile details and open package-provided workspace tabs.",
 			ru: "Проверьте данные профиля и откройте вкладки, которые предоставляют пакеты.",
 		}),
-		signedOutTitle: createWebsiteBuilderLocalizedDefault({
+		signedOutTitle: createPhotonLocalizedDefault({
 			en: "Sign in to continue",
 			ru: "Войдите, чтобы продолжить",
 		}),
-		signedOutBody: createWebsiteBuilderLocalizedDefault({
+		signedOutBody: createPhotonLocalizedDefault({
 			en: "Your account page is available after authentication.",
 			ru: "Личный кабинет доступен после авторизации.",
 		}),
-		signInLabel: createWebsiteBuilderLocalizedDefault({
+		signInLabel: createPhotonLocalizedDefault({
 			en: "Sign in",
 			ru: "Войти",
 		}),
@@ -324,8 +324,8 @@ export const authAccountShellDefinition = defineWebsiteBuilderBlockDefinition({
 
 export const AuthAccountOverview = ({
 	block,
-}: WebsiteBuilderBlockComponentProps<AuthAccountOverviewProps>) => {
-	const authResource = useWebsiteBuilderStore((state) => state.resources.auth);
+}: PhotonBlockComponentProps<AuthAccountOverviewProps>) => {
+	const authResource = usePhotonStore((state) => state.resources.auth);
 	const user =
 		typeof authResource === "object" && authResource !== null
 			? (authResource as { user?: { email?: string; name?: string } | null })
@@ -333,31 +333,31 @@ export const AuthAccountOverview = ({
 			: null;
 
 	return (
-		<div className="rounded-[calc(var(--wb-site-radius,24px)-4px)] border border-[var(--wb-site-border)] bg-[var(--wb-site-surface)] p-6">
+		<div className="rounded-[calc(var(--photon-site-radius,24px)-4px)] border border-[var(--photon-site-border)] bg-[var(--photon-site-surface)] p-6">
 			<EditableText
 				blockId={block.id}
 				path="statusLabel"
-				className="text-sm uppercase tracking-[0.22em] text-[var(--wb-site-muted)]"
+				className="text-sm uppercase tracking-[0.22em] text-[var(--photon-site-muted)]"
 			/>
 			<div className="mt-3 text-2xl font-semibold">
 				{user?.name ?? user?.email ?? "Account"}
 			</div>
 			{user?.email ? (
-				<div className="mt-2 text-[var(--wb-site-muted)]">{user.email}</div>
+				<div className="mt-2 text-[var(--photon-site-muted)]">{user.email}</div>
 			) : null}
 		</div>
 	);
 };
 
 export const authAccountOverviewDefinition =
-	defineWebsiteBuilderBlockDefinition({
+	definePhotonBlockDefinition({
 		type: "auth-account-overview",
 		label: "Auth Account Overview",
 		description: "Signed-in account overview card for the account shell.",
 		category: "Auth",
 		icon: "user-round",
 		defaults: {
-			statusLabel: createWebsiteBuilderLocalizedDefault({
+			statusLabel: createPhotonLocalizedDefault({
 				en: "Signed in",
 				ru: "Вы вошли",
 			}),

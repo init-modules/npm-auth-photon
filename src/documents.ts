@@ -1,10 +1,10 @@
-import type { WebsiteBuilderDocumentsMap } from "@init-modules/website-builder/public";
+import type { PhotonDocumentsMap } from "@init/photon/public";
 
 const now = "2026-04-19T00:00:00.000Z";
 
 export const createAuthAccountOverviewBlock = () => ({
 	id: "auth-account-overview",
-	module: "auth-website-builder",
+	module: "auth-photon",
 	type: "auth-account-overview",
 	props: {
 		statusLabel: "Signed in",
@@ -15,7 +15,7 @@ export const createAuthAccountShellBlock = (
 	blocks = [createAuthAccountOverviewBlock()],
 ) => ({
 	id: "auth-account-shell",
-	module: "auth-website-builder",
+	module: "auth-photon",
 	type: "auth-account-shell",
 	props: {
 		eyebrow: "Account",
@@ -35,7 +35,7 @@ export const createAuthAccountShellBlock = (
 	],
 });
 
-export const authWebsiteBuilderDocuments: WebsiteBuilderDocumentsMap = {
+export const authPhotonDocuments: PhotonDocumentsMap = {
 	account: {
 		id: "auth-account",
 		name: "Account",

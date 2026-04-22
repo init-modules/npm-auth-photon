@@ -1,3 +1,3 @@
 "use client";
 
-export { AuthDialog as AuthWebsiteBuilderDialog } from "@init-modules/auth-ui";
+export { AuthDialog as AuthPhotonDialog } from "@init/auth-ui";
