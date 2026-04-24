@@ -8,6 +8,8 @@
 	"types": "./src/index.ts",
 	"exports": {
 		".": "./src/index.ts",
+		"./app": "./src/app.ts",
+		"./nextjs": "./src/nextjs.ts",
 		"./public": "./src/public.tsx",
 		"./ui": "./src/ui.ts",
 		"./documents": "./src/documents.ts"
@@ -19,6 +21,7 @@
 	"peerDependencies": {
 		"@init/auth": "^0.1.0",
 		"@init/photon": "^0.1.0",
+		"@init/photon-nextjs": "^0.1.0",
 		"@init/ui": "^0.1.0",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0"
@@ -26,6 +29,7 @@
 	"devDependencies": {
 		"@init/auth": "file:../auth",
 		"@init/photon": "file:../../photon-foundation/photon",
+		"@init/photon-nextjs": "file:../../photon-foundation/photon-nextjs",
 		"@init/ui": "file:../../ui-foundation/ui",
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",

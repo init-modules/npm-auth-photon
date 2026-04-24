@@ -9,6 +9,7 @@ import {
 	authAccountOverviewDefinition,
 	authAccountShellDefinition,
 } from "./blocks/account-shell";
+import { authPageDefinition } from "./blocks/auth-page";
 import {
 	authAccountOverviewTab,
 	authPhotonSiteFrameExtension,
@@ -18,7 +19,11 @@ export const authPublicPhotonModule: PhotonModule = {
 	module: "auth-photon",
 	label: "Auth Photon",
 	version: "0.1.0",
-	blocks: [authAccountShellDefinition, authAccountOverviewDefinition],
+	blocks: [
+		authAccountShellDefinition,
+		authAccountOverviewDefinition,
+		authPageDefinition,
+	],
 };
 
 export const authPublicPhotonKit: PhotonInstallableKit =

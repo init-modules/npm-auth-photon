@@ -10,9 +10,10 @@ import {
 	type PhotonAccountTabExtension,
 	type PhotonBlockComponentProps,
 	type PhotonField,
-	PhotonLink,
 } from "@init/photon/public";
+import { Tabs, TabsList, TabsTrigger } from "@init/ui";
 import clsx from "clsx";
+import { useEffect, useState } from "react";
 
 type AuthAccountShellProps = {
 	eyebrow: string;
@@ -166,6 +167,9 @@ export const AuthAccountShell = ({
 }: PhotonBlockComponentProps<AuthAccountShellProps>) => {
 	const accountTabs = usePhotonStore((state) => state.accountTabs);
 	const requestAuth = usePhotonStore((state) => state.requestAuth);
+	const navigate = usePhotonStore((state) => state.navigate);
+	const prefetch = usePhotonStore((state) => state.prefetch);
+	const linkFactory = usePhotonStore((state) => state.linkFactory);
 	const authResource = usePhotonStore((state) => state.resources.auth);
 	const currentRoute = usePhotonStore((state) => state.document.route);
 	const user =
@@ -183,6 +187,51 @@ export const AuthAccountShell = ({
 	const contentArea =
 		contentAreaIndex >= 0 ? block.areas?.[contentAreaIndex] : block.areas?.[0];
 	const resolvedContentAreaIndex = contentAreaIndex >= 0 ? contentAreaIndex : 0;
+	const resolvedActiveTabId =
+		tabs.find((tab) => isAccountTabActive(tab, currentRoute))?.id ??
+		tabs[0]?.id ??
+		"account";
+	const [pendingTabId, setPendingTabId] = useState<string | null>(null);
+	const activeTabId = pendingTabId ?? resolvedActiveTabId;
+	const isRoutePending =
+		pendingTabId !== null && pendingTabId !== resolvedActiveTabId;
+
+	useEffect(() => {
+		setPendingTabId(null);
+	}, [resolvedActiveTabId]);
+
+	const handleTabSelect = (nextTab: PhotonAccountTabExtension) => {
+		const href = nextTab.href ?? "/account";
+		const resolvedHref = linkFactory(href);
+
+		if (isAccountTabActive(nextTab, currentRoute)) {
+			setPendingTabId(null);
+			return;
+		}
+
+		setPendingTabId(nextTab.id);
+
+		if (navigate) {
+			void navigate(href);
+			return;
+		}
+
+		if (typeof window !== "undefined") {
+			window.location.assign(resolvedHref);
+		}
+	};
+	const handleTabChange = (nextTabId: string) => {
+		const nextTab = tabs.find((tab) => tab.id === nextTabId);
+
+		if (nextTab) {
+			handleTabSelect(nextTab);
+		}
+	};
+	const handleTabPrefetch = (tab: PhotonAccountTabExtension) => {
+		if (prefetch) {
+			void prefetch(tab.href ?? "/account");
+		}
+	};
 
 	return (
 		<section className="mx-auto grid w-full max-w-[var(--photon-site-max-width,1280px)] gap-8 px-[var(--photon-site-gutter,24px)] py-12 text-[var(--photon-site-text)]">
@@ -206,73 +255,100 @@ export const AuthAccountShell = ({
 			</div>
 
 			<div className="grid gap-5 lg:grid-cols-[260px_minmax(0,1fr)]">
-				<nav
-					aria-label="Account"
-					className="sticky top-6 flex h-fit flex-col gap-1 rounded-[calc(var(--photon-site-radius,24px)-4px)] border border-[var(--photon-site-border)] bg-[var(--photon-site-surface)] p-2"
+				<Tabs
+					value={activeTabId}
+					onValueChange={handleTabChange}
+					className="contents"
 				>
-					{tabs.map((tab) => {
-						const isActive = isAccountTabActive(tab, currentRoute);
-
-						return (
-							<PhotonLink
+					<TabsList
+						aria-label="Account"
+						orientation="vertical"
+						indicatorClassName="rounded-[calc(var(--photon-site-radius,24px)-10px)] border border-[color-mix(in_srgb,var(--photon-site-accent)_36%,var(--photon-site-border))] bg-[color-mix(in_srgb,var(--photon-site-accent)_12%,var(--photon-site-surface))] shadow-none"
+						className="sticky top-6 flex h-fit w-full flex-col items-stretch justify-start gap-1 rounded-[calc(var(--photon-site-radius,24px)-4px)] border border-[var(--photon-site-border)] bg-[var(--photon-site-surface)] p-2 text-[var(--photon-site-muted)]"
+					>
+						{tabs.map((tab) => (
+							<TabsTrigger
 								key={tab.id}
-								href={tab.href ?? "/account"}
-								aria-current={isActive ? "page" : undefined}
+								value={tab.id}
+								aria-current={activeTabId === tab.id ? "page" : undefined}
+								onClick={(event) => {
+									event.preventDefault();
+									handleTabSelect(tab);
+								}}
+								onFocus={() => handleTabPrefetch(tab)}
+								onPointerEnter={() => handleTabPrefetch(tab)}
 								className={clsx(
-									"inline-flex min-h-11 items-center gap-3 rounded-[calc(var(--photon-site-radius,24px)-10px)] border px-3 py-2 text-sm font-semibold transition",
-									isActive
-										? "border-[color-mix(in_srgb,var(--photon-site-accent)_36%,var(--photon-site-border))] bg-[color-mix(in_srgb,var(--photon-site-accent)_12%,transparent)] text-[var(--photon-site-text)]"
-										: "border-transparent text-[var(--photon-site-muted)] hover:bg-[color-mix(in_srgb,var(--photon-site-accent)_8%,transparent)] hover:text-[var(--photon-site-text)]",
+									"min-h-11 w-full justify-start gap-3 rounded-[calc(var(--photon-site-radius,24px)-10px)] border border-transparent bg-transparent px-3 py-2 text-left text-sm font-semibold text-[var(--photon-site-muted)] transition-colors duration-300 ease-in-out hover:text-[var(--photon-site-text)] data-[state=active]:text-[var(--photon-site-text)]",
 								)}
 							>
 								<AccountTabIcon icon={tab.icon} />
 								<span>{tab.label}</span>
-							</PhotonLink>
-						);
-					})}
-				</nav>
+							</TabsTrigger>
+						))}
+					</TabsList>
 
-				<div className="min-w-0">
-					{user && contentArea && renderArea ? (
-						renderArea(contentArea, resolvedContentAreaIndex)
-					) : user ? (
-						<div className="rounded-[calc(var(--photon-site-radius,24px)-4px)] border border-[var(--photon-site-border)] bg-[var(--photon-site-surface)] p-6">
-							<div className="text-sm uppercase tracking-[0.22em] text-[var(--photon-site-muted)]">
-								Signed in
+					<div
+						key={currentRoute}
+						aria-busy={isRoutePending}
+						className={clsx(
+							"min-w-0 animate-[photon-account-tab-content_260ms_ease-in-out] transition-[opacity,transform,filter] duration-200 ease-in-out",
+							isRoutePending &&
+								"pointer-events-none translate-y-1 opacity-45 blur-[2px]",
+						)}
+					>
+						{user && contentArea && renderArea ? (
+							renderArea(contentArea, resolvedContentAreaIndex)
+						) : user ? (
+							<div className="rounded-[calc(var(--photon-site-radius,24px)-4px)] border border-[var(--photon-site-border)] bg-[var(--photon-site-surface)] p-6">
+								<div className="text-sm uppercase tracking-[0.22em] text-[var(--photon-site-muted)]">
+									Signed in
+								</div>
+								<div className="mt-3 text-2xl font-semibold">
+									{user.name ?? user.email}
+								</div>
+								<div className="mt-2 text-[var(--photon-site-muted)]">
+									{user.email}
+								</div>
 							</div>
-							<div className="mt-3 text-2xl font-semibold">
-								{user.name ?? user.email}
+						) : (
+							<div className="rounded-[calc(var(--photon-site-radius,24px)-4px)] border border-[var(--photon-site-border)] bg-[var(--photon-site-surface)] p-6">
+								<div className="mb-5 max-w-xl text-[var(--photon-site-muted)]">
+									<EditableTextarea
+										blockId={block.id}
+										path="signedOutBody"
+										className="leading-7"
+									/>
+								</div>
+								<button
+									type="button"
+									onClick={requestAuth}
+									className={clsx(
+										"inline-flex min-h-12 cursor-pointer items-center justify-center rounded-full bg-[var(--photon-site-accent)] px-5 text-sm font-semibold text-white shadow-[0_18px_34px_rgba(15,118,110,0.28)] transition hover:translate-y-[-1px]",
+									)}
+								>
+									<EditableText
+										blockId={block.id}
+										path="signInLabel"
+										className="font-semibold text-white"
+									/>
+								</button>
 							</div>
-							<div className="mt-2 text-[var(--photon-site-muted)]">
-								{user.email}
-							</div>
-						</div>
-					) : (
-						<div className="rounded-[calc(var(--photon-site-radius,24px)-4px)] border border-[var(--photon-site-border)] bg-[var(--photon-site-surface)] p-6">
-							<div className="mb-5 max-w-xl text-[var(--photon-site-muted)]">
-								<EditableTextarea
-									blockId={block.id}
-									path="signedOutBody"
-									className="leading-7"
-								/>
-							</div>
-							<button
-								type="button"
-								onClick={requestAuth}
-								className={clsx(
-									"inline-flex min-h-12 cursor-pointer items-center justify-center rounded-full bg-[var(--photon-site-accent)] px-5 text-sm font-semibold text-white shadow-[0_18px_34px_rgba(15,118,110,0.28)] transition hover:translate-y-[-1px]",
-								)}
-							>
-								<EditableText
-									blockId={block.id}
-									path="signInLabel"
-									className="font-semibold text-white"
-								/>
-							</button>
-						</div>
-					)}
-				</div>
+						)}
+					</div>
+				</Tabs>
 			</div>
+			<style>{`
+				@keyframes photon-account-tab-content {
+					from {
+						opacity: 0;
+						transform: translate3d(0, 10px, 0);
+					}
+					to {
+						opacity: 1;
+						transform: translate3d(0, 0, 0);
+					}
+				}
+			`}</style>
 		</section>
 	);
 };

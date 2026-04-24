@@ -11,35 +11,47 @@ export const authPhotonSiteFrameExtension: PhotonSiteFrameExtension =
 		label: "Auth",
 		order: 100,
 		header: {
-			actions: [
-				{
-					id: "auth:login",
-					label: "Sign in",
-					href: "/login",
-					kind: "auth",
-					authenticatedLabel: "Account",
-					authenticatedHref: "/account",
-					appearance: "secondary",
-					order: 100,
-				},
-			],
-		},
-		footer: {
-			navigationColumns: [
-				{
-					id: "auth:footer-account",
-					title: "Account",
-					order: 100,
-					links: [
-						{ id: "auth:footer-login", label: "Sign in", href: "/login" },
+			slots: {
+				actions: {
+					actions: [
 						{
-							id: "auth:footer-account-link",
-							label: "My account",
-							href: "/account",
+							id: "auth:login",
+							label: "Sign in",
+							href: "/login",
+							kind: "auth",
+							authenticatedLabel: "Account",
+							authenticatedHref: "/account",
+							appearance: "secondary",
+							order: 100,
 						},
 					],
 				},
-			],
+			},
+		},
+		footer: {
+			slots: {
+				navigation: {
+					navigationColumns: [
+						{
+							id: "auth:footer-account",
+							title: "Account",
+							order: 100,
+							links: [
+								{
+									id: "auth:footer-login",
+									label: "Sign in",
+									href: "/login",
+								},
+								{
+									id: "auth:footer-account-link",
+									label: "My account",
+									href: "/account",
+								},
+							],
+						},
+					],
+				},
+			},
 		},
 	});
 
