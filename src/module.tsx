@@ -16,6 +16,12 @@ import {
 	authAccountOverviewTab,
 	authPhotonSiteFrameExtension,
 } from "./sdk";
+import {
+	authInteractionActions,
+	authInteractionGuardEvaluators,
+	authInteractionGuards,
+	authInteractionSurfaces,
+} from "./surfaces";
 
 export const authPhotonModule: PhotonModule = {
 	module: "auth-photon",
@@ -37,4 +43,8 @@ export const authPhotonKit: PhotonInstallableKit =
 		documents: authPhotonDocuments,
 		siteFrameExtensions: [authPhotonSiteFrameExtension],
 		accountTabs: [authAccountOverviewTab],
-	});
+	interactionSurfaces: authInteractionSurfaces,
+	interactionActions: authInteractionActions,
+	interactionGuards: authInteractionGuards,
+	interactionGuardEvaluators: authInteractionGuardEvaluators,
+});

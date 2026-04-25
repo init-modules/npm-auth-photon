@@ -60,6 +60,18 @@ export const createAuthPhotonAppModule = (
 				...(options.dialogs?.public ?? {}),
 			},
 		},
+		requestAuthActions: {
+			admin: {
+				type: "surface",
+				intent: "auth:sign-in",
+				fallbackHref: options.redirects?.signIn ?? "/login",
+			},
+			public: {
+				type: "surface",
+				intent: "auth:sign-in",
+				fallbackHref: options.redirects?.signIn ?? "/login",
+			},
+		},
 	},
 	server: {
 		publicPageAccessGuards: [

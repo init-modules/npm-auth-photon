@@ -4,6 +4,7 @@ import {
 	type PhotonAccountTabExtension,
 	type PhotonSiteFrameExtension,
 } from "@init/photon/public";
+import { AuthHeaderAction } from "./auth-header-action";
 
 export const authPhotonSiteFrameExtension: PhotonSiteFrameExtension =
 	createPhotonSiteFrameExtension({
@@ -18,10 +19,34 @@ export const authPhotonSiteFrameExtension: PhotonSiteFrameExtension =
 							id: "auth:login",
 							label: "Sign in",
 							href: "/login",
+							dedupeKey: "auth:account",
 							kind: "auth",
 							authenticatedLabel: "Account",
 							authenticatedHref: "/account",
 							appearance: "secondary",
+							interaction: {
+								intent: "auth:sign-in",
+								fallbackHref: "/login",
+							},
+							action: {
+								type: "surface",
+								intent: "auth:sign-in",
+								fallbackHref: "/login",
+							},
+							triggerSlot: {
+								id: "site-header.auth",
+								label: "Auth",
+								description:
+									"Header action that opens the configured authentication flow.",
+								actionInstanceId: "auth:sign-in",
+								allowedActionDefinitionIds: ["auth.sign-in"],
+								allowedGuardDefinitionIds: ["auth.required"],
+								previewScenarios: [
+									{ id: "guest", label: "Guest" },
+									{ id: "authenticated", label: "Authenticated" },
+								],
+							},
+							component: AuthHeaderAction,
 							order: 100,
 						},
 					],
