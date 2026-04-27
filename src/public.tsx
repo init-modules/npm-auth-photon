@@ -21,6 +21,13 @@ import {
 	authInteractionSurfaces,
 } from "./surfaces";
 
+export {
+	createAuthDialogSurfaceRenderer,
+	type AuthDialogContentConfig,
+	type AuthDialogRendererOptions,
+	type AuthDialogRuntimeRenderer,
+} from "./auth-dialog-renderer";
+
 export const authPublicPhotonModule: PhotonModule = {
 	module: "auth-photon",
 	label: "Auth Photon",

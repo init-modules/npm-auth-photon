@@ -17,9 +17,12 @@ import {
 	authPhotonSiteFrameExtension,
 } from "./sdk";
 import {
+	authConditionDefinitions,
+	authConditionEvaluators,
 	authInteractionActions,
 	authInteractionGuardEvaluators,
 	authInteractionGuards,
+	authInteractionPolicies,
 	authInteractionSurfaces,
 } from "./surfaces";
 
@@ -47,4 +50,7 @@ export const authPhotonKit: PhotonInstallableKit =
 	interactionActions: authInteractionActions,
 	interactionGuards: authInteractionGuards,
 	interactionGuardEvaluators: authInteractionGuardEvaluators,
+	interactionPolicies: authInteractionPolicies,
+	conditionDefinitions: authConditionDefinitions,
+	conditionEvaluators: authConditionEvaluators,
 });

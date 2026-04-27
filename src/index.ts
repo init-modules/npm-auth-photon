@@ -9,3 +9,9 @@ export * from "./nextjs";
 export * from "./page-access-settings";
 export * from "./sdk";
 export * from "./surfaces";
+export {
+	createAuthDialogSurfaceRenderer,
+	type AuthDialogContentConfig,
+	type AuthDialogRendererOptions,
+	type AuthDialogRuntimeRenderer,
+} from "./auth-dialog-renderer";

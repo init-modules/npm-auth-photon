@@ -2,6 +2,9 @@ import {
 	createPhotonInteractionActionDefinition,
 	createPhotonInteractionGuardDefinition,
 	createPhotonInteractionSurfaceDefinition,
+	type PhotonActionPolicy,
+	type PhotonConditionDefinition,
+	type PhotonConditionEvaluatorMap,
 	type PhotonInteractionActionDefinition,
 	type PhotonInteractionGuardDefinition,
 	type PhotonInteractionGuardEvaluatorMap,
@@ -42,6 +45,111 @@ export const authDialogInteractionSurface =
 					{ label: "Login", value: "login" },
 					{ label: "Register", value: "register" },
 				],
+			},
+			{
+				path: "googleButtonLabel",
+				label: "Google button label",
+				kind: "text",
+				group: "content",
+				localization: "localized",
+			},
+			{
+				path: "dividerLabel",
+				label: "Divider label",
+				kind: "text",
+				group: "content",
+				localization: "localized",
+			},
+			{
+				path: "emailLabel",
+				label: "Email label",
+				kind: "text",
+				group: "content",
+				localization: "localized",
+			},
+			{
+				path: "emailPlaceholder",
+				label: "Email placeholder",
+				kind: "text",
+				group: "content",
+				localization: "localized",
+			},
+			{
+				path: "passwordLabel",
+				label: "Password label",
+				kind: "text",
+				group: "content",
+				localization: "localized",
+			},
+			{
+				path: "passwordPlaceholder",
+				label: "Password placeholder",
+				kind: "text",
+				group: "content",
+				localization: "localized",
+			},
+			{
+				path: "submitLabel",
+				label: "Submit button label",
+				kind: "text",
+				group: "content",
+				localization: "localized",
+			},
+			{
+				path: "forgotPasswordLabel",
+				label: "Forgot password link",
+				kind: "text",
+				group: "content",
+				localization: "localized",
+			},
+			{
+				path: "termsLabel",
+				label: "Terms text",
+				kind: "textarea",
+				group: "content",
+				localization: "localized",
+			},
+			{
+				path: "registerPromptLabel",
+				label: "Register prompt",
+				kind: "text",
+				group: "content",
+				localization: "localized",
+			},
+			{
+				path: "registerLinkLabel",
+				label: "Register link",
+				kind: "text",
+				group: "content",
+				localization: "localized",
+			},
+			{
+				path: "authenticatedTitle",
+				label: "Authenticated title",
+				kind: "text",
+				group: "content",
+				localization: "localized",
+			},
+			{
+				path: "authenticatedDescription",
+				label: "Authenticated description",
+				kind: "textarea",
+				group: "content",
+				localization: "localized",
+			},
+			{
+				path: "accountMenuLabel",
+				label: "Account menu label",
+				kind: "text",
+				group: "content",
+				localization: "localized",
+			},
+			{
+				path: "signOutLabel",
+				label: "Sign out label",
+				kind: "text",
+				group: "content",
+				localization: "localized",
 			},
 		],
 		defaultInstances: [
@@ -118,6 +226,20 @@ export const authInteractionActions: PhotonInteractionActionDefinition[] = [
 			{ id: "loading", label: "Loading" },
 			{ id: "error", label: "Error" },
 		],
+		states: [
+			{
+				id: "guest",
+				label: "Guest",
+				condition: { type: "ref", conditionId: "auth.isGuest" },
+			},
+			{
+				id: "authenticated",
+				label: "Authenticated",
+				condition: { type: "ref", conditionId: "auth.isAuthenticated" },
+			},
+			{ id: "loading", label: "Loading" },
+			{ id: "error", label: "Error" },
+		],
 	}),
 ];
 
@@ -158,3 +280,41 @@ export const authInteractionGuardEvaluators: PhotonInteractionGuardEvaluatorMap 
 						action: guard.action,
 					},
 	};
+
+export const authConditionDefinitions: PhotonConditionDefinition[] = [
+	{
+		id: "auth.isGuest",
+		packageName: "auth-photon",
+		label: "User is a guest",
+		resolution: "client",
+		defaultServerPreviewStateId: "guest",
+	},
+	{
+		id: "auth.isAuthenticated",
+		packageName: "auth-photon",
+		label: "User is authenticated",
+		resolution: "client",
+		defaultServerPreviewStateId: "guest",
+	},
+];
+
+export const authConditionEvaluators: PhotonConditionEvaluatorMap = {
+	"auth.isGuest": (ctx) =>
+		ctx.resources ? !hasAuthPhotonUser(ctx.resources) : null,
+	"auth.isAuthenticated": (ctx) =>
+		ctx.resources ? hasAuthPhotonUser(ctx.resources) : null,
+};
+
+export const authInteractionPolicies: PhotonActionPolicy[] = [
+	{
+		id: "auth.policy.sign-in-before-publish",
+		packageName: "auth-photon",
+		targetActionId: "publication.article.publish",
+		when: { type: "ref", conditionId: "auth.isGuest" },
+		run: "auth:publish-content",
+		scope: "package-default",
+		priority: 10,
+		enforcement: "client-hint",
+		securityMode: "fail-closed",
+	},
+];
