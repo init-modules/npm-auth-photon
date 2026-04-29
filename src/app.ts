@@ -4,6 +4,10 @@ import type {
 } from "@init/photon-nextjs";
 import { resolveServerAuthRedirectTo } from "@init/auth/server";
 import { readAuthPhotonPageAccess } from "./access";
+import {
+	authFooterAccountColumnContribution,
+	authLoginContribution,
+} from "./contributions";
 import { authPhotonDocuments } from "./documents";
 
 export type CreateAuthPhotonAppModuleOptions = {
@@ -43,6 +47,10 @@ export const createAuthPhotonAppModule = (
 		documents: authPhotonDocuments,
 		accountDocument: authPhotonDocuments.account,
 	},
+	siteFrameContributions: [
+		authLoginContribution,
+		authFooterAccountColumnContribution,
+	],
 	client: {
 		authDialogs: {
 			admin: {
